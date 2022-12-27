@@ -111,7 +111,9 @@ class MainActivity : AppCompatActivity() {
                     if (prefix.isNotEmpty()){
                         firstNumber = prefix + firstNumber
                     }
-                    tvInputText?.text = (firstNumber.toDouble() - lastNumber.toDouble()).toString()
+                    tvInputText?.text = removeZeroAfterDot(
+                        (firstNumber.toDouble() - lastNumber.toDouble()).toString()
+                    )
                 } else if (tvValue.contains("+")){
                     val splitValue = tvValue.split("+")
                     var firstNumber = splitValue[0]
@@ -120,7 +122,9 @@ class MainActivity : AppCompatActivity() {
                     if (prefix.isNotEmpty()){
                         firstNumber = prefix + firstNumber
                     }
-                    tvInputText?.text = (firstNumber.toDouble() + lastNumber.toDouble()).toString()
+                    tvInputText?.text = removeZeroAfterDot(
+                        (firstNumber.toDouble() + lastNumber.toDouble()).toString()
+                    )
                 } else if (tvValue.contains("*")){
                     val splitValue = tvValue.split("*")
                     var firstNumber = splitValue[0]
@@ -129,21 +133,36 @@ class MainActivity : AppCompatActivity() {
                     if (prefix.isNotEmpty()){
                         firstNumber = prefix + firstNumber
                     }
-                    tvInputText?.text = (firstNumber.toDouble() * lastNumber.toDouble()).toString()
+                    tvInputText?.text = removeZeroAfterDot(
+                        (firstNumber.toDouble() * lastNumber.toDouble()).toString()
+                    )
                 } else if (tvValue.contains("/")){
-                    val splitValue = tvValue.split("/")
-                    var firstNumber = splitValue[0]
-                    val lastNumber = splitValue[1]
+                    try {
+                        val splitValue = tvValue.split("/")
+                        var firstNumber = splitValue[0]
+                        val lastNumber = splitValue[1]
 
-                    if (prefix.isNotEmpty()){
-                        firstNumber = prefix + firstNumber
+                        if (prefix.isNotEmpty()){
+                            firstNumber = prefix + firstNumber
+                        }
+                        tvInputText?.text = removeZeroAfterDot(
+                            (firstNumber.toDouble() / lastNumber.toDouble()).toString()
+                        )
+                    } catch (e: java.lang.ArithmeticException){
+                        tvInputText?.text = e.toString()
                     }
-                    tvInputText?.text = (firstNumber.toDouble() / lastNumber.toDouble()).toString()
                 }
 
             }
         }
 
+    }
+    private fun removeZeroAfterDot(result : String) : String{
+        var value = result
+        if(result.endsWith(".0")) {
+            value= result.substring(0, result.length - 2)
+        }
+        return value
     }
 
     private fun isOperatorAdded(value: String): Boolean {
