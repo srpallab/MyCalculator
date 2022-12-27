@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
     private var buttonOne: Button? = null
@@ -50,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         buttonEqual = findViewById(R.id.buttonEquals)
         buttonClear = findViewById(R.id.buttonClr)
         tvInputText = findViewById(R.id.tvInputText)
-        // tvInputText?.text = null
         buttonDot = findViewById(R.id.buttonDot)
 
         val allButtons: List<Button?> = listOf(
@@ -99,8 +97,50 @@ class MainActivity : AppCompatActivity() {
 
         buttonEqual?.setOnClickListener {
             if (isLastClickDigit) {
-                val tvValue = tvInputText?.text.toString()
-                Toast.makeText(this, tvValue, Toast.LENGTH_LONG).show()
+                var tvValue : String = tvInputText?.text.toString()
+                var prefix = ""
+                if(tvValue.startsWith("-")){
+                    prefix = "-"
+                    tvValue = tvValue.substring(1)
+                }
+                if (tvValue.contains("-")){
+                    val splitValue = tvValue.split("-")
+                    var firstNumber = splitValue[0]
+                    val lastNumber = splitValue[1]
+
+                    if (prefix.isNotEmpty()){
+                        firstNumber = prefix + firstNumber
+                    }
+                    tvInputText?.text = (firstNumber.toDouble() - lastNumber.toDouble()).toString()
+                } else if (tvValue.contains("+")){
+                    val splitValue = tvValue.split("+")
+                    var firstNumber = splitValue[0]
+                    val lastNumber = splitValue[1]
+
+                    if (prefix.isNotEmpty()){
+                        firstNumber = prefix + firstNumber
+                    }
+                    tvInputText?.text = (firstNumber.toDouble() + lastNumber.toDouble()).toString()
+                } else if (tvValue.contains("*")){
+                    val splitValue = tvValue.split("*")
+                    var firstNumber = splitValue[0]
+                    val lastNumber = splitValue[1]
+
+                    if (prefix.isNotEmpty()){
+                        firstNumber = prefix + firstNumber
+                    }
+                    tvInputText?.text = (firstNumber.toDouble() * lastNumber.toDouble()).toString()
+                } else if (tvValue.contains("/")){
+                    val splitValue = tvValue.split("/")
+                    var firstNumber = splitValue[0]
+                    val lastNumber = splitValue[1]
+
+                    if (prefix.isNotEmpty()){
+                        firstNumber = prefix + firstNumber
+                    }
+                    tvInputText?.text = (firstNumber.toDouble() / lastNumber.toDouble()).toString()
+                }
+
             }
         }
 
